@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Node</title>
+        <link rel="stylesheet" href="../estilo.css" type="text/css">
+        <script type="text/javascript" src="../jquery-3.3.1.min.js"></script>
+    </head>
+    <body>
+        <h1>Listagem CLIENTES</h1>
+        
+            <input type="text" id="txtBusca" placeholder="id">
+            <button id="btnBusca">Buscar</button>
+        
+        <div id="id01">
+
+        </div>
+        <script>    
+            var idCliente = '';            
+            var url = "http://localhost:3000/clientes";
+            $(document).ready(function(){
+                $('#btnBusca').click(function(){
+                    createTable(url + "/id/" + idCliente);
+                });                
+                createTable(url);       
+            });
+
+            function createTable(url) {
+                $.getJSON(url, function(result) {
+                    var arr = result;
+                    var out = "<table>";
+                    for (var i = 0; i < arr.length; i++){
+                        out += "<tr><td>" + arr[i].id_cliente + "</td><td>" + arr[i].nome_cliente + "</td><td>" + arr[i].email + "</td><td><button class='removeItem' value=" +arr[i].id_cliente +">Remover</button></td></tr>"
+                    }
+                    out += "</table>";
+                    $('#id01').html(out);
+                    $('.removeItem').click(function(){
+                        var myURL = url + "/remove/" + $(this).val();
+                        $.getJSON(myURL, function(result) {                        
+                            createTable(url);
+                        });
+                    });  
+                });  
+            }
+        </script>
+    </body>
+</html>
