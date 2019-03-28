@@ -7,7 +7,14 @@
     </head>
     <body>
         <h1>Listagem CLIENTES</h1>
-        
+            <form action="http://localhost:3000/clientes/new" method="POST">
+                <input type="text" name="nome" placeholder="Nome">
+                <input type="date" name="data_nasc" placeholder="Data de Nascimento">
+                <input type="email" name="email" placeholder="email">
+                <button type="submit">Inserir</button>
+            </form>
+            <select id="categorias"></select>
+            <select id="produtos"></select>
             <input type="text" id="txtBusca" placeholder="id">
             <button id="btnBusca">Buscar</button>
         
@@ -18,10 +25,34 @@
             var idCliente = '';            
             var url = "http://localhost:3000/clientes";
             $(document).ready(function(){
-                $('#btnBusca').click(function(){
-                    createTable(url + "/id/" + idCliente);
-                });                
-                createTable(url);       
+                $.getJSON("http://localhost:3000/categorias", function(result){
+                    var categorias = result;
+                    var out = '';
+                    for(var i = 0; i < categorias.length; i++) {
+                        out += `<option value="${ categorias[i].id_categ_prod}">${ categorias[i].desc_categ_prod}</option>`;
+                    }
+                    $('#categorias').html(out);
+                    
+                });
+                $('#categorias').change(function(){
+                    $.getJSON(`http://localhost:3000/produtos/categoria/${ $(this).val() }`, function(result){
+                        var produtos = result;
+                        var out = '';
+                        for(var i = 0; i < produtos.length; i++) {
+                            out += `<option value="${ produtos[i].id_prod}">${ produtos[i].desc_produto }</option>`;
+                        }
+                        $('#produtos').html(out);                    
+                    });
+                }); 
+                $.getJSON(`http://localhost:3000/produtos/categoria/1`, function(result){
+                        var produtos = result;
+                        var out = '';
+                        for(var i = 0; i < produtos.length; i++) {
+                            out += `<option value="${ produtos[i].id_prod}">${ produtos[i].desc_produto }</option>`;
+                        }
+                        $('#produtos').html(out);                    
+                    });  
+                
             });
 
             function createTable(url) {

@@ -56,19 +56,24 @@ rota.get('/clientes/remove/:id', (req, res) => {
     if (req.params.id) filtro = 'where id_cliente=' + parseInt(req.params.id);
     execSqlQuery('delete from clientes ' + filtro, res);
 });
-app.use('/clientes/id', rota);
+app.use('/clientes/remove/id', rota);
 
-rota.get('/clientes/new', (req, res) => {
-    execSqlQuery("insert into clientes values (NULL,'" + req.query.nome + "','" + req.query.data_nasc + "','" + req.query.email + "');", res);
+rota.post('/clientes/new', (req, res) => {
+    execSqlQuery("insert into clientes values (NULL,'" + req.body.nome + "','" + req.body.data_nasc + "','" + req.body.email + "');", res);
 });
 app.use('/clientes/id', rota);
 
-rota.get('/clientes/update/:id', (req, res) => {
+rota.patch('/clientes/update/:id', (req, res) => {
     let filtro = '';
     if (req.params.id) filtro = 'where id_cliente=' + parseInt(req.params.id);
-    execSqlQuery("UPDATE clientes SET nome_cliente='" + req.query.nome + "',data_niver='" + req.querydata_nasc + "',email='" + req.query.email + "' " + filtro, res);
+    execSqlQuery("UPDATE clientes SET nome_cliente='" + req.body.nome + "',data_niver='" + req.body.data_nasc + "',email='" + req.body.email + "' " + filtro, res);
 });
 app.use('/clientes/id', rota);
 
-rota.get('/produtos', (req,res) => execSqlQuery('SELECT * FROM produtos', res));
+rota.get('/produtos/categoria/:id', (req,res) => {
+    execSqlQuery(`SELECT * FROM produtos where id_categ_prod='${req.params.id}'`, res)
+});
 app.use('/produtos', rota);
+
+rota.get('/categorias', (req, res) => execSqlQuery('SELECT * FROM categoriaprodutos', res));
+app.use('/categorias', rota);
