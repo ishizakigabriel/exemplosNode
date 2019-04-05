@@ -45,17 +45,13 @@
                     });
                 }); 
                 $.getJSON(`http://localhost:3000/produtos/categoria/1`, function(result){
-                        var produtos = result;
-                        var out = '';
-                        for(var i = 0; i < produtos.length; i++) {
-                            out += `<option value="${ produtos[i].id_prod}">${ produtos[i].desc_produto }</option>`;
-                        }
-                        $('#produtos').html(out);                    
-                    });  
-                
-            });
-
-            function createTable(url) {
+                    var produtos = result;
+                    var out = '';
+                    for(var i = 0; i < produtos.length; i++) {
+                        out += `<option value="${ produtos[i].id_prod}">${ produtos[i].desc_produto }</option>`;
+                    }
+                    $('#produtos').html(out);                    
+                });  
                 $.getJSON(url, function(result) {
                     var arr = result;
                     var out = "<table>";
@@ -71,6 +67,11 @@
                         });
                     });  
                 });  
+                
+            });
+
+            function createTable(url) {
+                
             }
         </script>
     </body>

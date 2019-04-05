@@ -77,3 +77,13 @@ app.use('/produtos', rota);
 
 rota.get('/categorias', (req, res) => execSqlQuery('SELECT * FROM categoriaprodutos', res));
 app.use('/categorias', rota);
+
+rota.post('/login', (req,res) => {
+    execSqlQuery(`SELECT * FROM usuarios WHERE username='${ req.body.username }'`, res)
+});
+app.use('/login', rota);
+
+rota.post('/signup', (req,res) => {
+    execSqlQuery(`INSERT INTO usuarios(username, password) VALUES ('${ req.body.username }','${ req.body.password }')`, res)
+});
+app.use('/signup', rota);

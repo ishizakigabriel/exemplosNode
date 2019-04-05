@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Index</title>
+        <link rel="stylesheet" href="../estilo.css" type="text/css">
+        <script type="text/javascript" src="../jquery-3.3.1.min.js"></script>
+    </head>
+    <body>
+        <div style="width: 20%; margin-left: 40%;">
+            <input type="text" name="username" placeholder="nome" id="username" style="width:100%; margin-top: 10px; margin-bottom: 10px;">
+            <br>            
+            <input type="password" name="password" placeholder="senha" id="password" style="width:100%; margin-bottom: 10px;">
+            <br>            
+            <button type="button" name="signup" id="signupButton" style="float: right; margin-right: 5px;">Criar conta</button>
+            <button type="button" name="login" id="loginButton" style="float: right; margin-right: 5px;">Entrar</button>
+            
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('#loginButton').click(function() {
+                    $.ajax({
+                        type: "POST",
+                        crossDomain: true,
+                        url: "http://localhost:3000/login",
+                        data: {
+                            username: $('#username').val() ,
+                            password: $('#password').val()
+                        },
+                        success: function( data ) {
+                            if(data.length = 0 || data[0].password != $('#password').val()) {
+                                alert("Usuário ou senha incorretos");
+                            }
+                            else {
+                                window.location.href = "produtos.html";
+                            }
+                        },
+                        dataType: 'json'
+                    });
+                });
+                $('#signupButton').click(function() {
+                    $.ajax({
+                        type: "POST",
+                        crossDomain: true,
+                        url: "http://localhost:3000/login",
+                        data: {
+                            username: $('#username').val() ,
+                            password: $('#password').val()
+                        },
+                        success: function( data ) {
+                            if(data.length > 0) {
+                                alert("Usuário já existe");
+                            }
+                            else {
+                                $.ajax({
+                                    type: "POST",
+                                    crossDomain: true,
+                                    url: "http://localhost:3000/signup",
+                                    data: {
+                                        username: $('#username').val() ,
+                                        password: $('#password').val()
+                                    },
+                                    success: function( data ) {
+                                        alert("Usuário criado com sucesso");
+                                        window.location.href = "produtos.html";
+                                    },
+                                    dataType: 'json'
+                                });
+                            }
+                        },
+                        dataType: 'json'
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
